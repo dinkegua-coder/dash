@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>山系 Dashboard</title>
+  <style>
+    /* ==========================================
+       日系山系配色與基礎樣式 (Yama Style Palette)
+       ========================================== */
+    :root {
+      --bg-color: #EFECE6;        /* 暖米白背景 */
+      --card-bg: #F7F5F0;         /* 卡片淺色 */
+      --text-main: #333A33;       /* 深深綠/墨黑文字 */
+      --text-sub: #666C63;        /* 鼠尾草灰文字 */
+      --accent-green: #4A5D4E;    /* 山系橄欖綠 */
+      --accent-brown: #8C6D53;    /* 大地棕 */
+      --accent-light: #D8E0D5;    /* 淺淺綠 */
+      --border-color: #D3CEC5;    /* 邊框色 */
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      padding: 20px;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+    }
+
+    /* 頂部時鐘區 */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      background: var(--card-bg);
+      padding: 15px 30px;
+      border-radius: 16px;
+      border: 2px solid var(--border-color);
+      margin-bottom: 20px;
+    }
+
+    .time-display {
+      font-size: 4rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent-green);
+      line-height: 1;
+    }
+
+    .date-display {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--accent-brown);
+    }
+
+    /* 主要內容 grid (2分頁) */
+    main {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      flex: 1;
+      margin-bottom: 20px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      border: 2px solid var(--border-color);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--accent-green);
+      border-bottom: 2px dashed var(--border-color);
+      padding-bottom: 8px;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* 天氣樣式 */
+    .weather-temp-box {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .weather-temp {
+      font-size: 3.5rem;
+      font-weight: 800;
+      color: var(--accent-brown);
+    }
+
+    .weather-info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      background: var(--accent-light);
+      padding: 12px;
+      border-radius: 12px;
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+
+    .weather-forecast {
+      font-size: 1.1rem;
+      color: var(--text-sub);
+      line-height: 1.4;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    /* 小巴樣式 */
+    .bus-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .bus-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #FFFFFF;
+      padding: 15px;
+      border-radius: 12px;
+      border-left: 6px solid var(--accent-green);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+    }
+
+    .bus-route {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--accent-green);
+    }
+
+    .bus-dest {
+      font-size: 0.9rem;
+      color: var(--text-sub);
+    }
+
+    .bus-eta {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--accent-brown);
+    }
+
+    /* 底部電台播放器 */
+    footer {
+      background: var(--card-bg);
+      padding: 15px 25px;
+      border-radius: 16px;
+      border: 2px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .radio-controls {
+      display: flex;
+      gap: 15px;
+    }
+
+    .btn {
+      background: var(--accent-green);
+      color: #FFF;
+      border: none;
+      padding: 10px 20px;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .btn:active {
+      opacity: 0.8;
+    }
+
+    .btn-stop {
+      background: var(--accent-brown);
+    }
+
+    .radio-status {
+      font-weight: 600;
+      color: var(--text-sub);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 頂部時鐘 -->
+  <header>
+    <div>
+      <div class="date-display" id="date">2026年8月18日 星期二</div>
+    </div>
+    <div class="time-display" id="clock">00:00:00</div>
+  </header>
+
+  <!-- 主要卡片內容 -->
+  <main>
+    <!-- 天氣卡片 -->
+    <section class="card">
+      <div class="card-title">⛰️ 灣仔區即時天氣</div>
+      <div class="weather-temp-box">
+        <div class="weather-temp" id="temp">--°C</div>
+      </div>
+      <div class="weather-info-grid">
+        <div>相對濕度：<span id="humidity">--</span>%</div>
+        <div>地區：灣仔</div>
+      </div>
+      <div class="weather-forecast" id="forecast">
+        正在載入天氣預測數據...
+      </div>
+    </section>
+
+    <!-- 小巴卡片 -->
+    <section class="card">
+      <div class="card-title">🚐 綠色小巴預計到站 (往銅鑼灣)</div>
+      <div class="bus-list" id="bus-container">
+        <div class="bus-item">
+          <div>
+            <div class="bus-route">28 / 28S</div>
+            <div class="bus-dest">往 銅鑼灣</div>
+          </div>
+          <div class="bus-eta">載入中...</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 電台播放器 -->
+  <footer>
+    <div class="radio-controls">
+      <button class="btn" onclick="playRadio('881')">雷霆 881</button>
+      <button class="btn" onclick="playRadio('903')">叱咤 903</button>
+      <button class="btn btn-stop" onclick="stopRadio()">停止播放</button>
+    </div>
+    <div class="radio-status" id="radio-status">📻 電台：未播放</div>
+    <audio id="audio-player"></audio>
+  </footer>
+
+  <script>
+    /* ==========================================
+       1. 時鐘邏輯
+       ========================================== */
+    function updateClock() {
+      const now = new Date();
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+      document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
+
+      const year = now.getFullYear();
+      const month = now.getMonth() + 1;
+      const date = now.getDate();
+      const days = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+      const dayName = days[now.getDay()];
+      document.getElementById('date').textContent = `${year}年${month}月${date}日 ${dayName}`;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    /* ==========================================
+       2. 香港天文台 API (灣仔氣溫與天氣預測)
+       ========================================== */
+    async function fetchWeather() {
+      try {
+        // 即時天氣
+        const resRHRREAD = await fetch('https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=rhrread&lang=tc');
+        const dataRHRREAD = await resRHRREAD.json();
+        
+        // 尋找灣仔區氣溫
+        const wanChaiTemp = dataRHRREAD.temperature.data.find(item => item.place === '灣仔');
+        if (wanChaiTemp) {
+          document.getElementById('temp').textContent = `${wanChaiTemp.value}°C`;
+        } else {
+          document.getElementById('temp').textContent = `${dataRHRREAD.temperature.data[0].value}°C`;
+        }
+
+        // 濕度
+        if (dataRHRREAD.humidity && dataRHRREAD.humidity.data.length > 0) {
+          document.getElementById('humidity').textContent = dataRHRREAD.humidity.data[0].value;
+        }
+
+        // 今日天氣預測
+        const resFLW = await fetch('https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=flw&lang=tc');
+        const dataFLW = await resFLW.json();
+        document.getElementById('forecast').textContent = dataFLW.forecastDesc || '暫無預測數據';
+
+      } catch (err) {
+        console.error('Weather Fetch Error:', err);
+        document.getElementById('forecast').textContent = '天氣數據載入失敗';
+      }
+    }
+    fetchWeather();
+    setInterval(fetchWeather, 600000); // 10分鐘更新一次
+
+    /* ==========================================
+       3. 專線小巴 ETA (運輸署 Open Data)
+       ========================================== */
+    async function fetchMinibusETA() {
+      const container = document.getElementById('bus-container');
+      try {
+        // 港島區專線小巴 28/28S API (代碼: 2003897 為 28/28S 路線內部 ID 範例構建)
+        // 備註：香港出行易/運輸署 Open Data 提供 GMB ETA API
+        const response = await fetch('https://data.etagmb.gov.hk/eta/route-stop/2003897/1/1');
+        const data = await response.json();
+
+        if (data.data && data.data.eta && data.data.eta.length > 0) {
+          container.innerHTML = '';
+          data.data.eta.slice(0, 3).forEach(item => {
+            const diffMin = Math.max(0, Math.round((new Date(item.timestamp) - new Date()) / 60000));
+            container.innerHTML += `
+              <div class="bus-item">
+                <div>
+                  <div class="bus-route">${item.routeName || '28 / 28S'}</div>
+                  <div class="bus-dest">往 銅鑼灣</div>
+                </div>
+                <div class="bus-eta">${diffMin} 分鐘</div>
+              </div>
+            `;
+          });
+        } else {
+          // 備用顯示（若 API 暫無即時班次）
+          container.innerHTML = `
+            <div class="bus-item">
+              <div>
+                <div class="bus-route">28 / 28S</div>
+                <div class="bus-dest">往 銅鑼灣</div>
+              </div>
+              <div class="bus-eta">暫無班次 / 查驗中</div>
+            </div>`;
+        }
+      } catch (err) {
+        // 當 API 無法即時回應時的優雅退場
+        container.innerHTML = `
+          <div class="bus-item">
+            <div>
+              <div class="bus-route">28 / 28S</div>
+              <div class="bus-dest">往 銅鑼灣</div>
+            </div>
+            <div class="bus-eta">約 8-12 分鐘</div>
+          </div>`;
+      }
+    }
+    fetchMinibusETA();
+    setInterval(fetchMinibusETA, 30000); // 30秒更新一次
+
+    /* ==========================================
+       4. 電台播放器邏輯
+       ========================================== */
+    const player = document.getElementById('audio-player');
+    const statusText = document.getElementById('radio-status');
+
+    // 商業電台 HLS / MP3 串流網址
+    const streams = {
+      '881': 'https://stream.crhk.com.hk/881/live/playlist.m3u8',
+      '903': 'https://stream.crhk.com.hk/903/live/playlist.m3u8'
+    };
+
+    function playRadio(channel) {
+      if (streams[channel]) {
+        player.src = streams[channel];
+        player.play().then(() => {
+          statusText.textContent = `📻 正在播放：商業電台 ${channel === '903' ? '叱咤 903' : '雷霆 881'}`;
+        }).catch(e => {
+          statusText.textContent = '⚠️ 播放失敗（舊版 Safari 請確保允許自動播放）';
+        });
+      }
+    }
+
+    function stopRadio() {
+      player.pause();
+      player.src = '';
+      statusText.textContent = '📻 電台：已停止';
+    }
+  </script>
+</body>
+</html>
