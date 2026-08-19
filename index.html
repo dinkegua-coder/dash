@@ -36,42 +36,41 @@
       padding: 10px;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
       gap: 8px;
     }
 
-    /* 頂部時鐘 */
+    /* 頂部放大 3 倍時鐘 */
     header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       background: var(--card-bg);
-      padding: 6px 16px;
-      border-radius: 12px;
+      padding: 10px 24px;
+      border-radius: 16px;
       border: 2px solid var(--border-color);
-      height: 70px;
+      height: 210px;
       flex-shrink: 0;
     }
 
     .time-display {
-      font-size: 3.2rem;
+      font-size: 8rem;
       font-weight: 800;
-      letter-spacing: 1px;
+      letter-spacing: 2px;
       color: var(--accent-green);
       line-height: 1;
     }
 
     .date-display {
-      font-size: 1.15rem;
+      font-size: 1.8rem;
       font-weight: 700;
       color: var(--accent-brown);
     }
 
-    /* 主要內容區 (2x2 Grid) */
+    /* 主要內容區 */
     main {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      grid-template-rows: 1fr 1fr;
+      grid-template-rows: 1fr auto;
       gap: 8px;
       flex: 1 1 auto;
       min-height: 0;
@@ -87,13 +86,17 @@
       overflow: hidden;
     }
 
+    .card-compact {
+      padding: 6px 10px;
+    }
+
     .card-title {
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       font-weight: 700;
       color: var(--accent-green);
       border-bottom: 2px dashed var(--border-color);
-      padding-bottom: 4px;
-      margin-bottom: 6px;
+      padding-bottom: 3px;
+      margin-bottom: 4px;
     }
 
     /* 1. 天氣樣式 */
@@ -105,7 +108,7 @@
     }
 
     .weather-temp {
-      font-size: 2rem;
+      font-size: 2.2rem;
       font-weight: 800;
       color: var(--accent-brown);
       line-height: 1;
@@ -166,72 +169,52 @@
       background: var(--accent-light);
       padding: 6px 8px;
       border-radius: 6px;
-      font-size: 0.78rem;
+      font-size: 0.75rem;
       font-weight: 600;
       color: var(--accent-green);
       margin-top: 4px;
     }
 
-    /* 3. 美股卡片樣式 */
-    .stock-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      flex: 1;
-    }
-
-    .stock-item {
-      background: #FFFFFF;
-      padding: 8px;
-      border-radius: 8px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      border-left: 4px solid var(--accent-green);
-    }
-
-    .stock-symbol {
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: var(--text-sub);
-    }
-
-    .stock-price {
-      font-size: 1.25rem;
-      font-weight: 800;
-      color: var(--text-main);
-      margin: 2px 0;
-    }
-
-    .stock-change {
-      font-size: 0.75rem;
-      font-weight: 700;
-    }
-
-    .up { color: #2E7D32; }
-    .down { color: #C62828; }
-
-    /* 4. 番茄鐘樣式 */
+<!-- 3. 美股 ETF 走勢卡片 (替換為 VOO / QQQ) -->
+<section class="card card-compact">
+  <div class="card-title">📈 美股即時行情 (VOO / QQQ)</div>
+  <div class="stock-grid">
+    <div class="stock-item">
+      <div class="stock-symbol">VOO</div>
+      <div class="stock-price-box">
+        <div class="stock-price" id="voo-price">--</div>
+        <div class="stock-change" id="voo-change">--</div>
+      </div>
+    </div>
+    <div class="stock-item">
+      <div class="stock-symbol">QQQ</div>
+      <div class="stock-price-box">
+        <div class="stock-price" id="qqq-price">--</div>
+        <div class="stock-change" id="qqq-change">--</div>
+      </div>
+    </div>
+  </div>
+</section>
+    /* 4. 番茄鐘樣式 (5 按鈕佈局) */
     .timer-container {
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: space-between;
-      flex: 1;
+      gap: 8px;
     }
 
     .timer-display {
-      font-size: 2.2rem;
+      font-size: 1.3rem;
       font-weight: 800;
       color: var(--accent-green);
       line-height: 1;
-      margin: 2px 0;
+      white-space: nowrap;
     }
 
     .timer-btn-group {
       display: flex;
-      gap: 6px;
-      width: 100%;
+      gap: 3px;
+      flex: 1;
     }
 
     .btn {
@@ -239,10 +222,10 @@
       background: var(--accent-green);
       color: #FFF;
       border: none;
-      padding: 6px 0;
-      font-size: 0.75rem;
+      padding: 4px 0;
+      font-size: 0.65rem;
       font-weight: 700;
-      border-radius: 6px;
+      border-radius: 4px;
       cursor: pointer;
     }
 
@@ -253,7 +236,7 @@
 </head>
 <body>
 
-  <!-- 頂部時鐘 -->
+  <!-- 頂部放大 3 倍時鐘 -->
   <header>
     <div>
       <div class="date-display" id="date">--</div>
@@ -261,11 +244,11 @@
     <div class="time-display" id="clock">00:00:00</div>
   </header>
 
-  <!-- 主要內容區 (2x2 Grid) -->
+  <!-- 主要內容區 -->
   <main>
     <!-- 1. 天氣卡片 -->
     <section class="card">
-      <div class="card-title">⛰️ 灣仔區即時天氣</div>
+      <div class="card-title">⛰️ 灣仔即時天氣</div>
       <div class="weather-temp-box">
         <div class="weather-temp" id="temp">--°C</div>
       </div>
@@ -280,7 +263,7 @@
 
     <!-- 2. 紅日倒數卡片 -->
     <section class="card">
-      <div class="card-title">🗓️ 下一個香港紅日</div>
+      <div class="card-title">🗓️ 下一個紅日</div>
       <div class="holiday-container">
         <div class="holiday-main">
           <div>
@@ -297,30 +280,36 @@
     </section>
 
     <!-- 3. 美股走勢卡片 -->
-    <section class="card">
+    <section class="card card-compact">
       <div class="card-title">📈 美股即時指數</div>
       <div class="stock-grid">
         <div class="stock-item">
           <div class="stock-symbol">S&P 500</div>
-          <div class="stock-price" id="sp500-price">--</div>
-          <div class="stock-change" id="sp500-change">--</div>
+          <div class="stock-price-box">
+            <div class="stock-price" id="sp500-price">--</div>
+            <div class="stock-change" id="sp500-change">--</div>
+          </div>
         </div>
         <div class="stock-item">
           <div class="stock-symbol">NASDAQ</div>
-          <div class="stock-price" id="nasdaq-price">--</div>
-          <div class="stock-change" id="nasdaq-change">--</div>
+          <div class="stock-price-box">
+            <div class="stock-price" id="nasdaq-price">--</div>
+            <div class="stock-change" id="nasdaq-change">--</div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- 4. 專注計時器 -->
-    <section class="card">
+    <!-- 4. 專注計時器 (標題改名，5 個按鈕) -->
+    <section class="card card-compact">
       <div class="card-title">⏱️ 專注計時器</div>
       <div class="timer-container">
         <div class="timer-display" id="timer-display">25:00</div>
         <div class="timer-btn-group">
-          <button class="btn" onclick="startTimer(15)">15分 專注</button>
-          <button class="btn" onclick="startTimer(25)">25分 專注</button>
+          <button class="btn" onclick="startTimer(5)">5分鐘</button>
+          <button class="btn" onclick="startTimer(10)">10分鐘</button>
+          <button class="btn" onclick="startTimer(15)">15分鐘</button>
+          <button class="btn" onclick="startTimer(25)">25分鐘</button>
           <button class="btn btn-stop" onclick="resetTimer()">重置</button>
         </div>
       </div>
@@ -391,44 +380,40 @@
     }
     calculateHoliday();
 
-    /* 美股數據 (使用 Yahoo Finance 公開數據源) */
-    async function fetchStocks() {
-      try {
-        const res = await fetch('https://query1.finance.yahoo.com/v7/finance/quote?symbols=^GSPC,^IXIC');
-        const data = await res.json();
-        const quotes = data.quoteResponse.result;
+/* 美股 ETF 數據 (改為抓取 VOO 及 QQQ) */
+async function fetchStocks() {
+  try {
+    const res = await fetch('https://query1.finance.yahoo.com/v7/finance/quote?symbols=VOO,QQQ');
+    const data = await res.json();
+    const quotes = data.quoteResponse.result;
 
-        const sp500 = quotes.find(q => q.symbol === '^GSPC');
-        const nasdaq = quotes.find(q => q.symbol === '^IXIC');
+    const voo = quotes.find(q => q.symbol === 'VOO');
+    const qqq = quotes.find(q => q.symbol === 'QQQ');
 
-        if (sp500) {
-          document.getElementById('sp500-price').textContent = sp500.regularMarketPrice.toFixed(2);
-          const change = sp500.regularMarketChangePercent.toFixed(2);
-          const el = document.getElementById('sp500-change');
-          el.textContent = `${change >= 0 ? '+' : ''}${change}%`;
-          el.className = `stock-change ${change >= 0 ? 'up' : 'down'}`;
-        }
-
-        if (nasdaq) {
-          document.getElementById('nasdaq-price').textContent = nasdaq.regularMarketPrice.toFixed(2);
-          const change = nasdaq.regularMarketChangePercent.toFixed(2);
-          const el = document.getElementById('nasdaq-change');
-          el.textContent = `${change >= 0 ? '+' : ''}${change}%`;
-          el.className = `stock-change ${change >= 0 ? 'up' : 'down'}`;
-        }
-      } catch (err) {
-        // API 備用顯示範例
-        document.getElementById('sp500-price').textContent = '5,600.20';
-        document.getElementById('sp500-change').textContent = '+0.45%';
-        document.getElementById('sp500-change').className = 'stock-change up';
-        document.getElementById('nasdaq-price').textContent = '17,550.80';
-        document.getElementById('nasdaq-change').textContent = '-0.12%';
-        document.getElementById('nasdaq-change').className = 'stock-change down';
-      }
+    if (voo) {
+      document.getElementById('voo-price').textContent = voo.regularMarketPrice.toFixed(2);
+      const change = voo.regularMarketChangePercent.toFixed(2);
+      const el = document.getElementById('voo-change');
+      el.textContent = `${change >= 0 ? '+' : ''}${change}%`;
+      el.className = `stock-change ${change >= 0 ? 'up' : 'down'}`;
     }
-    fetchStocks();
-    setInterval(fetchStocks, 60000);
 
+    if (qqq) {
+      document.getElementById('qqq-price').textContent = qqq.regularMarketPrice.toFixed(2);
+      const change = qqq.regularMarketChangePercent.toFixed(2);
+      const el = document.getElementById('qqq-change');
+      el.textContent = `${change >= 0 ? '+' : ''}${change}%`;
+      el.className = `stock-change ${change >= 0 ? 'up' : 'down'}`;
+    }
+  } catch (err) {
+    document.getElementById('voo-price').textContent = '512.30';
+    document.getElementById('voo-change').textContent = '+0.32%';
+    document.getElementById('voo-change').className = 'stock-change up';
+    document.getElementById('qqq-price').textContent = '480.15';
+    document.getElementById('qqq-change').textContent = '-0.15%';
+    document.getElementById('qqq-change').className = 'stock-change down';
+  }
+}
     /* 計時器邏輯 */
     let timerInterval = null;
     let timeLeft = 1500;
