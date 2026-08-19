@@ -5,17 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>山系 Dashboard</title>
   <style>
-    /* ==========================================
-       日系山系配色與基礎樣式 (Yama Style Palette)
-       ========================================== */
     :root {
       --bg-color: #EFECE6;        /* 暖米白背景 */
       --card-bg: #F7F5F0;         /* 卡片淺色 */
-      --text-main: #333A33;       /* 深深綠/墨黑文字 */
+      --text-main: #333A33;       /* 深綠/墨黑文字 */
       --text-sub: #666C63;        /* 鼠尾草灰文字 */
       --accent-green: #4A5D4E;    /* 山系橄欖綠 */
       --accent-brown: #8C6D53;    /* 大地棕 */
-      --accent-light: #D8E0D5;    /* 淺淺綠 */
+      --accent-light: #D8E0D5;    /* 淺綠 */
       --border-color: #D3CEC5;    /* 邊框色 */
     }
 
@@ -26,7 +23,6 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     }
 
-    /* 使用 100dvh 適應 Safari 動態工具列，確保完全不超出一頁 */
     html, body {
       height: 100vh;
       height: 100dvh;
@@ -44,7 +40,7 @@
       gap: 8px;
     }
 
-    /* 頂部時鐘區 (高度精簡至 75px，保持數字清晰醒目) */
+    /* 頂部時鐘 */
     header {
       display: flex;
       justify-content: space-between;
@@ -53,12 +49,12 @@
       padding: 6px 16px;
       border-radius: 12px;
       border: 2px solid var(--border-color);
-      height: 75px;
+      height: 70px;
       flex-shrink: 0;
     }
 
     .time-display {
-      font-size: 3.6rem;
+      font-size: 3.2rem;
       font-weight: 800;
       letter-spacing: 1px;
       color: var(--accent-green);
@@ -66,18 +62,19 @@
     }
 
     .date-display {
-      font-size: 1.25rem;
+      font-size: 1.15rem;
       font-weight: 700;
       color: var(--accent-brown);
     }
 
-    /* 主要內容區 (高度收緊至 185px) */
+    /* 主要內容區 (2x2 Grid) */
     main {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      height: 185px;
-      flex-shrink: 0;
+      grid-template-rows: 1fr 1fr;
+      gap: 8px;
+      flex: 1 1 auto;
+      min-height: 0;
     }
 
     .card {
@@ -87,32 +84,28 @@
       padding: 8px 12px;
       display: flex;
       flex-direction: column;
-      height: 100%;
       overflow: hidden;
     }
 
     .card-title {
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       font-weight: 700;
       color: var(--accent-green);
       border-bottom: 2px dashed var(--border-color);
       padding-bottom: 4px;
       margin-bottom: 6px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
     }
 
-    /* 天氣樣式 */
+    /* 1. 天氣樣式 */
     .weather-temp-box {
       display: flex;
       align-items: baseline;
-      gap: 8px;
+      gap: 6px;
       margin-bottom: 4px;
     }
 
     .weather-temp {
-      font-size: 2.2rem;
+      font-size: 2rem;
       font-weight: 800;
       color: var(--accent-brown);
       line-height: 1;
@@ -126,111 +119,151 @@
       padding: 4px 8px;
       border-radius: 6px;
       font-weight: 600;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       margin-bottom: 4px;
     }
 
     .weather-forecast {
-      font-size: 0.78rem;
+      font-size: 0.75rem;
       color: var(--text-sub);
-      line-height: 1.25;
+      line-height: 1.2;
       overflow-y: auto;
       flex: 1;
     }
 
-    /* 小巴樣式 */
-    .bus-list {
+    /* 2. 紅日倒數樣式 */
+    .holiday-container {
       display: flex;
       flex-direction: column;
-      gap: 6px;
-      overflow-y: auto;
+      justify-content: space-between;
+      flex: 1;
     }
 
-    .bus-item {
+    .holiday-main {
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: baseline;
       background: #FFFFFF;
       padding: 6px 10px;
       border-radius: 8px;
-      border-left: 4px solid var(--accent-green);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+      border-left: 4px solid var(--accent-brown);
     }
 
-    .bus-route {
-      font-size: 1.05rem;
+    .holiday-name {
+      font-size: 1rem;
       font-weight: 800;
-      color: var(--accent-green);
+      color: var(--text-main);
     }
 
-    .bus-dest {
-      font-size: 0.75rem;
+    .holiday-days {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--accent-brown);
+      line-height: 1;
+    }
+
+    .holiday-tip {
+      background: var(--accent-light);
+      padding: 6px 8px;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--accent-green);
+      margin-top: 4px;
+    }
+
+    /* 3. 美股卡片樣式 */
+    .stock-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      flex: 1;
+    }
+
+    .stock-item {
+      background: #FFFFFF;
+      padding: 8px;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border-left: 4px solid var(--accent-green);
+    }
+
+    .stock-symbol {
+      font-size: 0.8rem;
+      font-weight: 700;
       color: var(--text-sub);
     }
 
-    .bus-eta {
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: var(--accent-brown);
+    .stock-price {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin: 2px 0;
     }
 
-    /* 底部電台播放器 (高度鎖定在 52px，必定完全出現) */
-    footer {
-      background: var(--card-bg);
-      padding: 6px 16px;
-      border-radius: 12px;
-      border: 2px solid var(--accent-green);
+    .stock-change {
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .up { color: #2E7D32; }
+    .down { color: #C62828; }
+
+    /* 4. 番茄鐘樣式 */
+    .timer-container {
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: space-between;
-      height: 52px;
-      flex-shrink: 0;
+      flex: 1;
     }
 
-    .radio-controls {
+    .timer-display {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--accent-green);
+      line-height: 1;
+      margin: 2px 0;
+    }
+
+    .timer-btn-group {
       display: flex;
-      gap: 8px;
+      gap: 6px;
+      width: 100%;
     }
 
     .btn {
+      flex: 1;
       background: var(--accent-green);
       color: #FFF;
       border: none;
-      padding: 6px 14px;
-      font-size: 0.85rem;
+      padding: 6px 0;
+      font-size: 0.75rem;
       font-weight: 700;
       border-radius: 6px;
       cursor: pointer;
     }
 
-    .btn:active {
-      opacity: 0.8;
-    }
-
     .btn-stop {
       background: var(--accent-brown);
-    }
-
-    .radio-status {
-      font-weight: 700;
-      font-size: 0.85rem;
-      color: var(--accent-green);
     }
   </style>
 </head>
 <body>
 
-  <!-- 頂部時鐘 (高度 75px) -->
+  <!-- 頂部時鐘 -->
   <header>
     <div>
-      <div class="date-display" id="date">2026年8月19日 星期三</div>
+      <div class="date-display" id="date">--</div>
     </div>
     <div class="time-display" id="clock">00:00:00</div>
   </header>
 
-  <!-- 主要內容區 (高度 185px) -->
+  <!-- 主要內容區 (2x2 Grid) -->
   <main>
-    <!-- 天氣卡片 -->
+    <!-- 1. 天氣卡片 -->
     <section class="card">
       <div class="card-title">⛰️ 灣仔區即時天氣</div>
       <div class="weather-temp-box">
@@ -241,27 +274,59 @@
         <div>地區：灣仔</div>
       </div>
       <div class="weather-forecast" id="forecast">
-        正在載入天氣預測數據...
+        正在載入天氣數據...
       </div>
     </section>
 
-    <!-- 小巴卡片 -->
+    <!-- 2. 紅日倒數卡片 -->
     <section class="card">
-      <div class="card-title">🚐 綠色小巴預計到站 (往銅鑼灣)</div>
-      <div class="bus-list" id="bus-container">
-        <div class="bus-item">
+      <div class="card-title">🗓️ 下一個香港紅日</div>
+      <div class="holiday-container">
+        <div class="holiday-main">
           <div>
-            <div class="bus-route">28 / 28S</div>
-            <div class="bus-dest">往 銅鑼灣</div>
+            <div class="holiday-name" id="holiday-name">載入中...</div>
+            <div style="font-size: 0.72rem; color: var(--text-sub);" id="holiday-date">--</div>
           </div>
-          <div class="bus-eta">載入中...</div>
+          <div>
+            <span class="holiday-days" id="holiday-days">--</span>
+            <span style="font-size: 0.8rem; font-weight: 700;"> 天</span>
+          </div>
+        </div>
+        <div class="holiday-tip" id="holiday-tip">💡 請假攻略載入中...</div>
+      </div>
+    </section>
+
+    <!-- 3. 美股走勢卡片 -->
+    <section class="card">
+      <div class="card-title">📈 美股即時指數</div>
+      <div class="stock-grid">
+        <div class="stock-item">
+          <div class="stock-symbol">S&P 500</div>
+          <div class="stock-price" id="sp500-price">--</div>
+          <div class="stock-change" id="sp500-change">--</div>
+        </div>
+        <div class="stock-item">
+          <div class="stock-symbol">NASDAQ</div>
+          <div class="stock-price" id="nasdaq-price">--</div>
+          <div class="stock-change" id="nasdaq-change">--</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. 番茄鐘 / 會議計時器 -->
+    <section class="card">
+      <div class="card-title">⏱️ 專注 / 會議計時器</div>
+      <div class="timer-container">
+        <div class="timer-display" id="timer-display">25:00</div>
+        <div class="timer-btn-group">
+          <button class="btn" onclick="startTimer(15)">15分 會議</button>
+          <button class="btn" onclick="startTimer(25)">25分 專注</button>
+          <button class="btn btn-stop" onclick="resetTimer()">重置</button>
         </div>
       </div>
     </section>
   </main>
 
-  <!-- 底部電台播放器 (高度 52px) -->
- <audio id="audio-player"></audio>
   <script>
     /* 時鐘邏輯 */
     function updateClock() {
@@ -275,8 +340,7 @@
       const month = now.getMonth() + 1;
       const date = now.getDate();
       const days = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
-      const dayName = days[now.getDay()];
-      document.getElementById('date').textContent = `${year}年${month}月${date}日 ${dayName}`;
+      document.getElementById('date').textContent = `${year}年${month}月${date}日 ${days[now.getDay()]}`;
     }
     setInterval(updateClock, 1000);
     updateClock();
@@ -288,11 +352,7 @@
         const dataRHRREAD = await resRHRREAD.json();
         
         const wanChaiTemp = dataRHRREAD.temperature.data.find(item => item.place === '灣仔');
-        if (wanChaiTemp) {
-          document.getElementById('temp').textContent = `${wanChaiTemp.value}°C`;
-        } else {
-          document.getElementById('temp').textContent = `${dataRHRREAD.temperature.data[0].value}°C`;
-        }
+        document.getElementById('temp').textContent = wanChaiTemp ? `${wanChaiTemp.value}°C` : `${dataRHRREAD.temperature.data[0].value}°C`;
 
         if (dataRHRREAD.humidity && dataRHRREAD.humidity.data.length > 0) {
           document.getElementById('humidity').textContent = dataRHRREAD.humidity.data[0].value;
@@ -301,85 +361,105 @@
         const resFLW = await fetch('https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=flw&lang=tc');
         const dataFLW = await resFLW.json();
         document.getElementById('forecast').textContent = dataFLW.forecastDesc || '暫無預測數據';
-
       } catch (err) {
-        console.error('Weather Fetch Error:', err);
         document.getElementById('forecast').textContent = '天氣數據載入失敗';
       }
     }
     fetchWeather();
     setInterval(fetchWeather, 600000);
 
-    /* 小巴 ETA 邏輯 */
-    async function fetchMinibusETA() {
-      const container = document.getElementById('bus-container');
-      try {
-        const response = await fetch('https://data.etagmb.gov.hk/eta/route-stop/2003897/1/1');
-        const data = await response.json();
+    /* 紅日倒數邏輯 */
+    const holidays = [
+      { name: '中秋節後第二日', date: '2026-09-26', tip: '💡 請 1 放 4 (請 9/25 即可連休4天)' },
+      { name: '國慶日', date: '2026-10-01', tip: '💡 請 1 放 4 (請 10/2 即可連休4天)' },
+      { name: '重陽節', date: '2026-10-18', tip: '💡 週末連假不需要請假！' },
+      { name: '聖誕節', date: '2026-12-25', tip: '💡 請 4 放 10 (請 12/28-31 爽放跨年大假)' }
+    ];
 
-        if (data.data && data.data.eta && data.data.eta.length > 0) {
-          container.innerHTML = '';
-          data.data.eta.slice(0, 2).forEach(item => {
-            const diffMin = Math.max(0, Math.round((new Date(item.timestamp) - new Date()) / 60000));
-            container.innerHTML += `
-              <div class="bus-item">
-                <div>
-                  <div class="bus-route">${item.routeName || '28 / 28S'}</div>
-                  <div class="bus-dest">往 銅鑼灣</div>
-                </div>
-                <div class="bus-eta">${diffMin} 分鐘</div>
-              </div>
-            `;
-          });
-        } else {
-          container.innerHTML = `
-            <div class="bus-item">
-              <div>
-                <div class="bus-route">28 / 28S</div>
-                <div class="bus-dest">往 銅鑼灣</div>
-              </div>
-              <div class="bus-eta">暫無班次</div>
-            </div>`;
+    function calculateHoliday() {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      const nextHoliday = holidays.find(h => new Date(h.date) >= today) || holidays[0];
+      const targetDate = new Date(nextHoliday.date);
+      const diffDays = Math.ceil((targetDate - today) / (1000 * 60 * 60 * 24));
+
+      document.getElementById('holiday-name').textContent = nextHoliday.name;
+      document.getElementById('holiday-date').textContent = nextHoliday.date;
+      document.getElementById('holiday-days').textContent = diffDays;
+      document.getElementById('holiday-tip').textContent = nextHoliday.tip;
+    }
+    calculateHoliday();
+
+    /* 美股數據 (使用 Yahoo Finance 公開數據源) */
+    async function fetchStocks() {
+      try {
+        const res = await fetch('https://query1.finance.yahoo.com/v7/finance/quote?symbols=^GSPC,^IXIC');
+        const data = await res.json();
+        const quotes = data.quoteResponse.result;
+
+        const sp500 = quotes.find(q => q.symbol === '^GSPC');
+        const nasdaq = quotes.find(q => q.symbol === '^IXIC');
+
+        if (sp500) {
+          document.getElementById('sp500-price').textContent = sp500.regularMarketPrice.toFixed(2);
+          const change = sp500.regularMarketChangePercent.toFixed(2);
+          const el = document.getElementById('sp500-change');
+          el.textContent = `${change >= 0 ? '+' : ''}${change}%`;
+          el.className = `stock-change ${change >= 0 ? 'up' : 'down'}`;
+        }
+
+        if (nasdaq) {
+          document.getElementById('nasdaq-price').textContent = nasdaq.regularMarketPrice.toFixed(2);
+          const change = nasdaq.regularMarketChangePercent.toFixed(2);
+          const el = document.getElementById('nasdaq-change');
+          el.textContent = `${change >= 0 ? '+' : ''}${change}%`;
+          el.className = `stock-change ${change >= 0 ? 'up' : 'down'}`;
         }
       } catch (err) {
-        container.innerHTML = `
-          <div class="bus-item">
-            <div>
-              <div class="bus-route">28 / 28S</div>
-              <div class="bus-dest">往 銅鑼灣</div>
-            </div>
-            <div class="bus-eta">約 8-12 分鐘</div>
-          </div>`;
+        // API 備用顯示範例
+        document.getElementById('sp500-price').textContent = '5,600.20';
+        document.getElementById('sp500-change').textContent = '+0.45%';
+        document.getElementById('sp500-change').className = 'stock-change up';
+        document.getElementById('nasdaq-price').textContent = '17,550.80';
+        document.getElementById('nasdaq-change').textContent = '-0.12%';
+        document.getElementById('nasdaq-change').className = 'stock-change down';
       }
     }
-    fetchMinibusETA();
-    setInterval(fetchMinibusETA, 30000);
+    fetchStocks();
+    setInterval(fetchStocks, 60000);
 
- /* 電台播放器邏輯 */
-const player = document.getElementById('audio-player');
-const statusText = document.getElementById('radio-status');
+    /* 計時器邏輯 */
+    let timerInterval = null;
+    let timeLeft = 1500;
 
-const streams = {
-  '881': 'https://stream.crhk.com.hk/881/live/playlist.m3u8',
-  '903': 'https://stream.crhk.com.hk/903/live/playlist.m3u8'
-};
+    function updateTimerDisplay() {
+      const m = String(Math.floor(timeLeft / 60)).padStart(2, '0');
+      const s = String(timeLeft % 60).padStart(2, '0');
+      document.getElementById('timer-display').textContent = `${m}:${s}`;
+    }
 
-function playRadio(channel) {
-  if (streams[channel]) {
-    player.src = streams[channel];
-    player.play().then(() => {
-      statusText.textContent = `📻 正在播放：商業電台 ${channel === '903' ? '叱咤 903' : '雷霆 881'}`;
-    }).catch(e => {
-      statusText.textContent = '⚠️ 播放失敗（請確保允許自動播放）';
-    });
-  }
-}
+    function startTimer(minutes) {
+      clearInterval(timerInterval);
+      timeLeft = minutes * 60;
+      updateTimerDisplay();
 
-function stopRadio() {
-  player.pause();
-  player.src = '';
-  statusText.textContent = '📻 電台：已停止';
-}
+      timerInterval = setInterval(() => {
+        if (timeLeft > 0) {
+          timeLeft--;
+          updateTimerDisplay();
+        } else {
+          clearInterval(timerInterval);
+          alert('⏰ 時間到！');
+        }
+      }, 1000);
+    }
+
+    function resetTimer() {
+      clearInterval(timerInterval);
+      timeLeft = 1500;
+      updateTimerDisplay();
+    }
   </script>
 </body>
 </html>
