@@ -261,19 +261,19 @@
     </section>
 
     <!-- 4. 專注計時器 (標題改名，5 個按鈕) -->
-    <section class="card card-compact">
-      <div class="card-title">⏱️ 專注計時器</div>
-      <div class="timer-container">
-        <div class="timer-display" id="timer-display">25:00</div>
-        <div class="timer-btn-group">
-          <button class="btn" onclick="startTimer(5)">5分鐘</button>
-          <button class="btn" onclick="startTimer(10)">10分鐘</button>
-          <button class="btn" onclick="startTimer(15)">15分鐘</button>
-          <button class="btn" onclick="startTimer(25)">25分鐘</button>
-          <button class="btn btn-stop" onclick="resetTimer()">重置</button>
-        </div>
-      </div>
-    </section>
+<section class="card card-compact">
+  <div class="card-title">⏱️ 專注計時器</div>
+  <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 6px;">
+    <div id="timer-display" style="font-size: 1.3rem; font-weight: 800; color: #4A5D4E; line-height: 1;">25:00</div>
+    <div style="display: flex; width: 100%; gap: 4px; margin-top: 4px;">
+      <button onclick="startTimer(5)" style="flex: 1; background: #4A5D4E; color: #FFF; border: none; padding: 4px 0; font-size: 0.65rem; font-weight: 700; border-radius: 4px; cursor: pointer;">5m</button>
+      <button onclick="startTimer(10)" style="flex: 1; background: #4A5D4E; color: #FFF; border: none; padding: 4px 0; font-size: 0.65rem; font-weight: 700; border-radius: 4px; cursor: pointer;">10m</button>
+      <button onclick="startTimer(15)" style="flex: 1; background: #4A5D4E; color: #FFF; border: none; padding: 4px 0; font-size: 0.65rem; font-weight: 700; border-radius: 4px; cursor: pointer;">15m</button>
+      <button onclick="startTimer(25)" style="flex: 1; background: #4A5D4E; color: #FFF; border: none; padding: 4px 0; font-size: 0.65rem; font-weight: 700; border-radius: 4px; cursor: pointer;">25m</button>
+      <button onclick="resetTimer()" style="flex: 1; background: #8C6D53; color: #FFF; border: none; padding: 4px 0; font-size: 0.65rem; font-weight: 700; border-radius: 4px; cursor: pointer;">重置</button>
+    </div>
+  </div>
+</section>
   </main>
 
   <script>
@@ -340,11 +340,13 @@
     }
     calculateHoliday();
 
-/* 美股 ETF 數據 (VOO / QQQ) */
+/* 美股 ETF 數據 (透過 CORS 代理讀取 Yahoo Finance) */
 async function fetchStocks() {
   try {
-    const res = await fetch('https://query1.finance.yahoo.com/v7/finance/quote?symbols=VOO,QQQ');
-    const data = await res.json();
+    const targetUrl = encodeURIComponent('https://query1.finance.yahoo.com/v7/finance/quote?symbols=VOO,QQQ');
+    const res = await fetch(`https://api.allorigins.win/get?url=${targetUrl}`);
+    const wrapper = await res.json();
+    const data = JSON.parse(wrapper.contents);
     const quotes = data.quoteResponse.result;
 
     const voo = quotes.find(q => q.symbol === 'VOO');
@@ -366,12 +368,7 @@ async function fetchStocks() {
       el.className = `stock-change ${change >= 0 ? 'up' : 'down'}`;
     }
   } catch (err) {
-    document.getElementById('voo-price').textContent = '512.30';
-    document.getElementById('voo-change').textContent = '+0.32%';
-    document.getElementById('voo-change').className = 'stock-change up';
-    document.getElementById('qqq-price').textContent = '480.15';
-    document.getElementById('qqq-change').textContent = '-0.15%';
-    document.getElementById('qqq-change').className = 'stock-change down';
+    console.error('Stock fetch error:', err);
   }
 }
 
