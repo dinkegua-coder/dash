@@ -175,9 +175,9 @@
       margin-top: 4px;
     }
 
-<!-- 3. 美股 ETF 走勢卡片 (替換為 VOO / QQQ) -->
+<!-- 3. 美股 ETF 走勢卡片 -->
 <section class="card card-compact">
-  <div class="card-title">📈 美股即時行情 (VOO / QQQ)</div>
+  <div class="card-title">📈 美股ETF即時行情 (VOO / QQQ)</div>
   <div class="stock-grid">
     <div class="stock-item">
       <div class="stock-symbol">VOO</div>
@@ -195,46 +195,6 @@
     </div>
   </div>
 </section>
-    /* 4. 番茄鐘樣式 (5 按鈕佈局) */
-    .timer-container {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-    }
-
-    .timer-display {
-      font-size: 1.3rem;
-      font-weight: 800;
-      color: var(--accent-green);
-      line-height: 1;
-      white-space: nowrap;
-    }
-
-    .timer-btn-group {
-      display: flex;
-      gap: 3px;
-      flex: 1;
-    }
-
-    .btn {
-      flex: 1;
-      background: var(--accent-green);
-      color: #FFF;
-      border: none;
-      padding: 4px 0;
-      font-size: 0.65rem;
-      font-weight: 700;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-
-    .btn-stop {
-      background: var(--accent-brown);
-    }
-  </style>
-</head>
-<body>
 
   <!-- 頂部放大 3 倍時鐘 -->
   <header>
@@ -380,7 +340,7 @@
     }
     calculateHoliday();
 
-/* 美股 ETF 數據 (改為抓取 VOO 及 QQQ) */
+/* 美股 ETF 數據 (VOO / QQQ) */
 async function fetchStocks() {
   try {
     const res = await fetch('https://query1.finance.yahoo.com/v7/finance/quote?symbols=VOO,QQQ');
@@ -414,6 +374,7 @@ async function fetchStocks() {
     document.getElementById('qqq-change').className = 'stock-change down';
   }
 }
+
     /* 計時器邏輯 */
     let timerInterval = null;
     let timeLeft = 1500;
