@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>山系 Dashboard</title>
+  <title>Dashboard</title>
   <style>
     :root {
       --bg-color: #EFECE6;        /* 暖米白背景 */
@@ -313,13 +313,13 @@
       </div>
     </section>
 
-    <!-- 4. 番茄鐘 / 會議計時器 -->
+    <!-- 4. 專注計時器 -->
     <section class="card">
-      <div class="card-title">⏱️ 專注 / 會議計時器</div>
+      <div class="card-title">⏱️ 專注計時器</div>
       <div class="timer-container">
         <div class="timer-display" id="timer-display">25:00</div>
         <div class="timer-btn-group">
-          <button class="btn" onclick="startTimer(15)">15分 會議</button>
+          <button class="btn" onclick="startTimer(15)">15分 專注</button>
           <button class="btn" onclick="startTimer(25)">25分 專注</button>
           <button class="btn btn-stop" onclick="resetTimer()">重置</button>
         </div>
@@ -450,7 +450,7 @@
           updateTimerDisplay();
         } else {
           clearInterval(timerInterval);
-          alert('⏰ 時間到！');
+          alert('⏰ 夠鐘！');
         }
       }, 1000);
     }
