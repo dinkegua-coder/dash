@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="zh-HK">
 <head>
@@ -27,64 +26,65 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     }
 
+    /* 使用 100dvh 適應 Safari 動態工具列，確保完全不超出一頁 */
     html, body {
       height: 100vh;
+      height: 100dvh;
       width: 100vw;
       background-color: var(--bg-color);
       color: var(--text-main);
-      overflow: hidden; /* 鎖定不允許捲動 */
+      overflow: hidden;
     }
 
     body {
-      padding: 16px;
+      padding: 10px;
       display: flex;
       flex-direction: column;
-      justify-content: space-between; /* 均勻分配 上、中、下 三區塊 */
-      box-sizing: border-box;
+      justify-content: space-between;
+      gap: 8px;
     }
 
-    /* 頂部時鐘區 (大幅放大字體) */
+    /* 頂部時鐘區 (高度精簡至 75px，保持數字清晰醒目) */
     header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       background: var(--card-bg);
-      padding: 12px 24px;
-      border-radius: 16px;
+      padding: 6px 16px;
+      border-radius: 12px;
       border: 2px solid var(--border-color);
-      height: 110px; /* 固定時鐘高度 */
+      height: 75px;
       flex-shrink: 0;
     }
 
     .time-display {
-      font-size: 5.5rem; /* 大幅放大時間數字 */
+      font-size: 3.6rem;
       font-weight: 800;
-      letter-spacing: 2px;
+      letter-spacing: 1px;
       color: var(--accent-green);
       line-height: 1;
     }
 
     .date-display {
-      font-size: 1.6rem; /* 放大日期文字 */
+      font-size: 1.25rem;
       font-weight: 700;
       color: var(--accent-brown);
     }
 
-    /* 主要內容區 (固定高度，防止無限拉長) */
+    /* 主要內容區 (高度收緊至 185px) */
     main {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      height: 240px; /* 強制寫死卡片高度，確保不擠壓電台 */
+      gap: 10px;
+      height: 185px;
       flex-shrink: 0;
-      margin: 12px 0;
     }
 
     .card {
       background: var(--card-bg);
-      border-radius: 16px;
+      border-radius: 12px;
       border: 2px solid var(--border-color);
-      padding: 14px 18px;
+      padding: 8px 12px;
       display: flex;
       flex-direction: column;
       height: 100%;
@@ -92,12 +92,12 @@
     }
 
     .card-title {
-      font-size: 1.15rem;
+      font-size: 0.95rem;
       font-weight: 700;
       color: var(--accent-green);
       border-bottom: 2px dashed var(--border-color);
-      padding-bottom: 6px;
-      margin-bottom: 8px;
+      padding-bottom: 4px;
+      margin-bottom: 6px;
       display: flex;
       align-items: center;
       gap: 6px;
@@ -108,11 +108,11 @@
       display: flex;
       align-items: baseline;
       gap: 8px;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
 
     .weather-temp {
-      font-size: 2.8rem;
+      font-size: 2.2rem;
       font-weight: 800;
       color: var(--accent-brown);
       line-height: 1;
@@ -121,19 +121,19 @@
     .weather-info-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 6px;
+      gap: 4px;
       background: var(--accent-light);
-      padding: 6px 12px;
-      border-radius: 8px;
+      padding: 4px 8px;
+      border-radius: 6px;
       font-weight: 600;
-      font-size: 0.9rem;
-      margin-bottom: 8px;
+      font-size: 0.8rem;
+      margin-bottom: 4px;
     }
 
     .weather-forecast {
-      font-size: 0.85rem;
+      font-size: 0.78rem;
       color: var(--text-sub);
-      line-height: 1.35;
+      line-height: 1.25;
       overflow-y: auto;
       flex: 1;
     }
@@ -142,7 +142,7 @@
     .bus-list {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
       overflow-y: auto;
     }
 
@@ -151,55 +151,55 @@
       justify-content: space-between;
       align-items: center;
       background: #FFFFFF;
-      padding: 10px 14px;
-      border-radius: 10px;
-      border-left: 5px solid var(--accent-green);
-      box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+      padding: 6px 10px;
+      border-radius: 8px;
+      border-left: 4px solid var(--accent-green);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
     }
 
     .bus-route {
-      font-size: 1.25rem;
+      font-size: 1.05rem;
       font-weight: 800;
       color: var(--accent-green);
     }
 
     .bus-dest {
-      font-size: 0.85rem;
+      font-size: 0.75rem;
       color: var(--text-sub);
     }
 
     .bus-eta {
-      font-size: 1.25rem;
+      font-size: 1.05rem;
       font-weight: 700;
       color: var(--accent-brown);
     }
 
-    /* 底部電台播放器 (固定高度並拉高) */
+    /* 底部電台播放器 (高度鎖定在 52px，必定完全出現) */
     footer {
       background: var(--card-bg);
-      padding: 14px 24px;
-      border-radius: 16px;
-      border: 2px solid var(--accent-green); /* 加上綠色邊框讓它更明顯 */
+      padding: 6px 16px;
+      border-radius: 12px;
+      border: 2px solid var(--accent-green);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      height: 70px; /* 固定電台區高度 */
+      height: 52px;
       flex-shrink: 0;
     }
 
     .radio-controls {
       display: flex;
-      gap: 12px;
+      gap: 8px;
     }
 
     .btn {
       background: var(--accent-green);
       color: #FFF;
       border: none;
-      padding: 10px 20px;
-      font-size: 1rem;
+      padding: 6px 14px;
+      font-size: 0.85rem;
       font-weight: 700;
-      border-radius: 8px;
+      border-radius: 6px;
       cursor: pointer;
     }
 
@@ -213,14 +213,14 @@
 
     .radio-status {
       font-weight: 700;
-      font-size: 1rem;
+      font-size: 0.85rem;
       color: var(--accent-green);
     }
   </style>
 </head>
 <body>
 
-  <!-- 頂部時鐘 (字體已大幅放大) -->
+  <!-- 頂部時鐘 (高度 75px) -->
   <header>
     <div>
       <div class="date-display" id="date">2026年8月19日 星期三</div>
@@ -228,7 +228,7 @@
     <div class="time-display" id="clock">00:00:00</div>
   </header>
 
-  <!-- 主要卡片內容 (固定高度 240px) -->
+  <!-- 主要內容區 (高度 185px) -->
   <main>
     <!-- 天氣卡片 -->
     <section class="card">
@@ -260,7 +260,7 @@
     </section>
   </main>
 
-  <!-- 底部電台播放器 (強制鎖定在畫面底部) -->
+  <!-- 底部電台播放器 (高度 52px) -->
   <footer>
     <div class="radio-controls">
       <button class="btn" onclick="playRadio('881')">雷霆 881</button>
@@ -328,7 +328,7 @@
 
         if (data.data && data.data.eta && data.data.eta.length > 0) {
           container.innerHTML = '';
-          data.data.eta.slice(0, 3).forEach(item => {
+          data.data.eta.slice(0, 2).forEach(item => {
             const diffMin = Math.max(0, Math.round((new Date(item.timestamp) - new Date()) / 60000));
             container.innerHTML += `
               <div class="bus-item">
@@ -379,7 +379,7 @@
         player.play().then(() => {
           statusText.textContent = `📻 正在播放：商業電台 ${channel === '903' ? '叱咤 903' : '雷霆 881'}`;
         }).catch(e => {
-          statusText.textContent = '⚠️ 播放失敗（舊版 Safari 請確保允許自動播放）';
+          statusText.textContent = '⚠️ 播放失敗（請確保允許自動播放）';
         });
       }
     }
