@@ -355,31 +355,31 @@
     fetchMinibusETA();
     setInterval(fetchMinibusETA, 30000);
 
-    /* 電台播放器邏輯 */
-    const player = document.getElementById('audio-player');
-    const statusText = document.getElementById('radio-status');
+ /* 電台播放器邏輯 */
+const player = document.getElementById('audio-player');
+const statusText = document.getElementById('radio-status');
 
-    const streams = {
-      '881': 'https://stream.crhk.com.hk/881/live/playlist.m3u8',
-      '903': 'https://stream.crhk.com.hk/903/live/playlist.m3u8'
-    };
+const streams = {
+  '881': 'https://stream.crhk.com.hk/881/live/playlist.m3u8',
+  '903': 'https://stream.crhk.com.hk/903/live/playlist.m3u8'
+};
 
-    function playRadio(channel) {
-      if (streams[channel]) {
-        player.src = streams[channel];
-        player.play().then(() => {
-          statusText.textContent = `📻 正在播放：商業電台 ${channel === '903' ? '叱咤 903' : '雷霆 881'}`;
-        }).catch(e => {
-          statusText.textContent = '⚠️ 播放失敗（請確保允許自動播放）';
-        });
-      }
-    }
+function playRadio(channel) {
+  if (streams[channel]) {
+    player.src = streams[channel];
+    player.play().then(() => {
+      statusText.textContent = `📻 正在播放：商業電台 ${channel === '903' ? '叱咤 903' : '雷霆 881'}`;
+    }).catch(e => {
+      statusText.textContent = '⚠️ 播放失敗（請確保允許自動播放）';
+    });
+  }
+}
 
-    function stopRadio() {
-      player.pause();
-      player.src = '';
-      statusText.textContent = '📻 電台：已停止';
-    }
+function stopRadio() {
+  player.pause();
+  player.src = '';
+  statusText.textContent = '📻 電台：已停止';
+}
   </script>
 </body>
 </html>
