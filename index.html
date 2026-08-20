@@ -32,6 +32,7 @@
       overflow: hidden;
     }
 
+    /* 全螢幕 3 等分佈局 */
     body {
       padding: 10px;
       display: flex;
@@ -39,8 +40,9 @@
       gap: 8px;
     }
 
-    /* 頂部放大 3 倍時鐘 */
+    /* 上部分：時鐘 (佔 1/3 高度) */
     header {
+      flex: 1;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -48,12 +50,11 @@
       padding: 10px 24px;
       border-radius: 16px;
       border: 2px solid var(--border-color);
-      height: 210px;
-      flex-shrink: 0;
+      min-height: 0;
     }
 
     .time-display {
-      font-size: 8rem;
+      font-size: clamp(3.5rem, 8vh, 7.5rem);
       font-weight: 800;
       letter-spacing: 2px;
       color: var(--accent-green);
@@ -61,18 +62,18 @@
     }
 
     .date-display {
-      font-size: 1.8rem;
+      font-size: clamp(1.2rem, 3vh, 1.8rem);
       font-weight: 700;
       color: var(--accent-brown);
     }
 
-    /* 主要內容區 */
+    /* 中部分 & 下部分 (佔 2/3 高度，分為上下兩排格仔) */
     main {
+      flex: 2;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      grid-template-rows: 1fr auto;
+      grid-template-rows: 1fr 1fr;
       gap: 8px;
-      flex: 1 1 auto;
       min-height: 0;
     }
 
@@ -84,6 +85,7 @@
       display: flex;
       flex-direction: column;
       overflow: hidden;
+      min-height: 0;
     }
 
     .card-compact {
@@ -96,7 +98,8 @@
       color: var(--accent-green);
       border-bottom: 2px dashed var(--border-color);
       padding-bottom: 3px;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
+      flex-shrink: 0;
     }
 
     /* 1. 天氣樣式 */
@@ -108,7 +111,7 @@
     }
 
     .weather-temp {
-      font-size: 2.2rem;
+      font-size: 2rem;
       font-weight: 800;
       color: var(--accent-brown);
       line-height: 1;
@@ -127,7 +130,7 @@
     }
 
     .weather-forecast {
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       color: var(--text-sub);
       line-height: 1.2;
       overflow-y: auto;
@@ -153,13 +156,13 @@
     }
 
     .holiday-name {
-      font-size: 1rem;
+      font-size: 0.95rem;
       font-weight: 800;
       color: var(--text-main);
     }
 
     .holiday-days {
-      font-size: 1.8rem;
+      font-size: 1.7rem;
       font-weight: 800;
       color: var(--accent-brown);
       line-height: 1;
@@ -169,58 +172,91 @@
       background: var(--accent-light);
       padding: 6px 8px;
       border-radius: 6px;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 600;
       color: var(--accent-green);
       margin-top: 4px;
     }
 
-    /* 3. 美股 ETF 樣式 */
-    .stock-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 6px;
-    }
-
-    .stock-item {
-      background: #FFFFFF;
-      padding: 4px 8px;
-      border-radius: 6px;
+    /* 3. 今日備忘 (To-Do List) 樣式 */
+    .todo-input-group {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-left: 3px solid var(--accent-green);
+      gap: 4px;
+      margin-bottom: 6px;
+      flex-shrink: 0;
     }
 
-    .stock-symbol {
+    .todo-input {
+      flex: 1;
+      padding: 4px 8px;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      font-size: 0.75rem;
+      outline: none;
+      background: #FFF;
+      color: var(--text-main);
+    }
+
+    .todo-btn {
+      background: var(--accent-green);
+      color: #FFF;
+      border: none;
+      padding: 4px 10px;
       font-size: 0.75rem;
       font-weight: 700;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .todo-list {
+      list-style: none;
+      overflow-y: auto;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .todo-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #FFFFFF;
+      padding: 3px 6px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+    }
+
+    .todo-item.completed span {
+      text-decoration: line-through;
       color: var(--text-sub);
+      opacity: 0.6;
     }
 
-    .stock-price-box {
-      text-align: right;
+    .todo-item span {
+      flex: 1;
+      word-break: break-all;
     }
 
-    .stock-price {
-      font-size: 0.95rem;
-      font-weight: 800;
-      color: var(--text-main);
-      line-height: 1;
+    .todo-item input[type="checkbox"] {
+      cursor: pointer;
+      accent-color: var(--accent-green);
     }
 
-    .stock-change {
-      font-size: 0.7rem;
-      font-weight: 700;
+    .todo-del-btn {
+      border: none;
+      background: transparent;
+      color: #C62828;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 0.8rem;
+      padding: 0 4px;
     }
-
-    .up { color: #2E7D32; }
-    .down { color: #C62828; }
   </style>
 </head>
 <body>
 
-  <!-- 頂部放大 3 倍時鐘 -->
+  <!-- 頂部 1/3：時鐘區 -->
   <header>
     <div>
       <div class="date-display" id="date">--</div>
@@ -228,9 +264,9 @@
     <div class="time-display" id="clock">00:00:00</div>
   </header>
 
-  <!-- 主要內容區 -->
+  <!-- 中部與底部 2/3：四個卡片區 -->
   <main>
-    <!-- 1. 天氣卡片 -->
+    <!-- 中部左：天氣卡片 -->
     <section class="card">
       <div class="card-title">⛰️ 灣仔即時天氣</div>
       <div class="weather-temp-box">
@@ -245,7 +281,7 @@
       </div>
     </section>
 
-    <!-- 2. 紅日倒數卡片 -->
+    <!-- 中部右：紅日倒數卡片 -->
     <section class="card">
       <div class="card-title">🗓️ 下一個紅日</div>
       <div class="holiday-container">
@@ -263,45 +299,34 @@
       </div>
     </section>
 
-    <!-- 3. 美股走勢卡片 -->
+    <!-- 底部左：今日備忘 / 待辦事項 (替代原本美股 ETF) -->
     <section class="card card-compact">
-      <div class="card-title">📈 美股ETF即時行情 (VOO / QQQ)</div>
-      <div class="stock-grid">
-        <div class="stock-item">
-          <div class="stock-symbol">VOO</div>
-          <div class="stock-price-box">
-            <div class="stock-price" id="voo-price">--</div>
-            <div class="stock-change" id="voo-change">--</div>
-          </div>
-        </div>
-        <div class="stock-item">
-          <div class="stock-symbol">QQQ</div>
-          <div class="stock-price-box">
-            <div class="stock-price" id="qqq-price">--</div>
-            <div class="stock-change" id="qqq-change">--</div>
-          </div>
-        </div>
+      <div class="card-title">📝 今日備忘 / 待辦事項</div>
+      <div class="todo-input-group">
+        <input type="text" id="todo-input" class="todo-input" placeholder="輸入事項後按 Enter..." onkeydown="if(event.key==='Enter') addTodo()">
+        <button onclick="addTodo()" class="todo-btn">新增</button>
       </div>
+      <ul id="todo-list" class="todo-list"></ul>
     </section>
 
-    <!-- 4. 專注計時器 -->
+    <!-- 底部右：專注計時器 -->
     <section class="card card-compact">
       <div class="card-title">⏱️ 專注計時器</div>
-      <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 6px;">
-        <div id="timer-display" style="font-size: 1.3rem; font-weight: 800; color: #4A5D4E; line-height: 1;">25:00</div>
+      <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 6px; flex: 1; justify-content: center;">
+        <div id="timer-display" style="font-size: 1.5rem; font-weight: 800; color: #4A5D4E; line-height: 1;">25:00</div>
         <div style="display: flex; width: 100%; gap: 4px; margin-top: 4px;">
-          <button onclick="startTimer(5)" style="flex: 1; background: #4A5D4E; color: #FFF; border: none; padding: 4px 0; font-size: 0.65rem; font-weight: 700; border-radius: 4px; cursor: pointer;">5分鐘</button>
-          <button onclick="startTimer(10)" style="flex: 1; background: #4A5D4E; color: #FFF; border: none; padding: 4px 0; font-size: 0.65rem; font-weight: 700; border-radius: 4px; cursor: pointer;">10分鐘</button>
-          <button onclick="startTimer(15)" style="flex: 1; background: #4A5D4E; color: #FFF; border: none; padding: 4px 0; font-size: 0.65rem; font-weight: 700; border-radius: 4px; cursor: pointer;">15分鐘</button>
-          <button onclick="startTimer(25)" style="flex: 1; background: #4A5D4E; color: #FFF; border: none; padding: 4px 0; font-size: 0.65rem; font-weight: 700; border-radius: 4px; cursor: pointer;">25分鐘</button>
-          <button onclick="resetTimer()" style="flex: 1; background: #8C6D53; color: #FFF; border: none; padding: 4px 0; font-size: 0.65rem; font-weight: 700; border-radius: 4px; cursor: pointer;">重置</button>
+          <button onclick="startTimer(5)" style="flex: 1; background: #4A5D4E; color: #FFF; border: none; padding: 5px 0; font-size: 0.65rem; font-weight: 700; border-radius: 4px; cursor: pointer;">5m</button>
+          <button onclick="startTimer(10)" style="flex: 1; background: #4A5D4E; color: #FFF; border: none; padding: 5px 0; font-size: 0.65rem; font-weight: 700; border-radius: 4px; cursor: pointer;">10m</button>
+          <button onclick="startTimer(15)" style="flex: 1; background: #4A5D4E; color: #FFF; border: none; padding: 5px 0; font-size: 0.65rem; font-weight: 700; border-radius: 4px; cursor: pointer;">15m</button>
+          <button onclick="startTimer(25)" style="flex: 1; background: #4A5D4E; color: #FFF; border: none; padding: 5px 0; font-size: 0.65rem; font-weight: 700; border-radius: 4px; cursor: pointer;">25m</button>
+          <button onclick="resetTimer()" style="flex: 1; background: #8C6D53; color: #FFF; border: none; padding: 5px 0; font-size: 0.65rem; font-weight: 700; border-radius: 4px; cursor: pointer;">重置</button>
         </div>
       </div>
     </section>
   </main>
 
   <script>
-    /* 時鐘邏輯 */
+    /* 1. 時鐘邏輯 */
     function updateClock() {
       const now = new Date();
       const hours = String(now.getHours()).padStart(2, '0');
@@ -318,7 +343,7 @@
     setInterval(updateClock, 1000);
     updateClock();
 
-    /* 天氣邏輯 */
+    /* 2. 天氣邏輯 */
     async function fetchWeather() {
       try {
         const resRHRREAD = await fetch('https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=rhrread&lang=tc');
@@ -341,7 +366,7 @@
     fetchWeather();
     setInterval(fetchWeather, 600000);
 
-    /* 紅日倒數邏輯 */
+    /* 3. 紅日倒數邏輯 */
     const holidays = [
       { name: '中秋節後第二日', date: '2026-09-26', tip: '💡 請 1 放 4 (請 9/25 即可連休4天)' },
       { name: '國慶日', date: '2026-10-01', tip: '💡 請 1 放 4 (請 10/2 即可連休4天)' },
@@ -364,50 +389,50 @@
     }
     calculateHoliday();
 
-    /* 美股 ETF 數據 */
-    async function fetchStocks() {
-      try {
-        // 抓取 VOO 數據
-        const resVOO = await fetch('https://stooq.com/q/l/?s=voo.us&f=sd2t2ohlcvp&h&e=json');
-        const dataVOO = await resVOO.json();
-        const symbolVOO = dataVOO.symbols?.[0];
+    /* 4. 今日備忘 / 待辦事項邏輯 (LocalStorage) */
+    let todos = JSON.parse(localStorage.getItem('dashboard_todos') || '[]');
 
-        if (symbolVOO && symbolVOO.close) {
-          const price = parseFloat(symbolVOO.close);
-          const basePrice = parseFloat(symbolVOO.open || symbolVOO.prev_close || price);
-          const changePct = basePrice !== 0 ? ((price - basePrice) / basePrice) * 100 : 0;
+    function saveAndRenderTodos() {
+      localStorage.setItem('dashboard_todos', JSON.stringify(todos));
+      const listEl = document.getElementById('todo-list');
+      listEl.innerHTML = '';
 
-          document.getElementById('voo-price').textContent = price.toFixed(2);
-          const el = document.getElementById('voo-change');
-          el.textContent = `${changePct >= 0 ? '+' : ''}${changePct.toFixed(2)}%`;
-          el.className = `stock-change ${changePct >= 0 ? 'up' : 'down'}`;
-        }
+      todos.forEach((todo, index) => {
+        const li = document.createElement('li');
+        li.className = `todo-item ${todo.completed ? 'completed' : ''}`;
+        li.innerHTML = `
+          <input type="checkbox" ${todo.completed ? 'checked' : ''} onchange="toggleTodo(${index})">
+          <span>${todo.text}</span>
+          <button class="todo-del-btn" onclick="deleteTodo(${index})">×</button>
+        `;
+        listEl.appendChild(li);
+      });
+    }
 
-        // 抓取 QQQ 數據
-        const resQQQ = await fetch('https://stooq.com/q/l/?s=qqq.us&f=sd2t2ohlcvp&h&e=json');
-        const dataQQQ = await resQQQ.json();
-        const symbolQQQ = dataQQQ.symbols?.[0];
-
-        if (symbolQQQ && symbolQQQ.close) {
-          const price = parseFloat(symbolQQQ.close);
-          const basePrice = parseFloat(symbolQQQ.open || symbolQQQ.prev_close || price);
-          const changePct = basePrice !== 0 ? ((price - basePrice) / basePrice) * 100 : 0;
-
-          document.getElementById('qqq-price').textContent = price.toFixed(2);
-          const el = document.getElementById('qqq-change');
-          el.textContent = `${changePct >= 0 ? '+' : ''}${changePct.toFixed(2)}%`;
-          el.className = `stock-change ${changePct >= 0 ? 'up' : 'down'}`;
-        }
-      } catch (err) {
-        console.error('Stock fetch error:', err);
+    function addTodo() {
+      const input = document.getElementById('todo-input');
+      const text = input.value.trim();
+      if (text) {
+        todos.push({ text: text, completed: false });
+        input.value = '';
+        saveAndRenderTodos();
       }
     }
-    
-    /* 立即執行美股抓取，並設為每 60 秒更新一次 */
-    fetchStocks();
-    setInterval(fetchStocks, 60000);
 
-    /* 計時器邏輯 */
+    function toggleTodo(index) {
+      todos[index].completed = !todos[index].completed;
+      saveAndRenderTodos();
+    }
+
+    function deleteTodo(index) {
+      todos.splice(index, 1);
+      saveAndRenderTodos();
+    }
+
+    // 初始化渲染備忘事項
+    saveAndRenderTodos();
+
+    /* 5. 計時器邏輯 */
     let timerInterval = null;
     let timeLeft = 1500;
 
