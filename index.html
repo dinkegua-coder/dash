@@ -265,7 +265,7 @@
 
     <!-- 3. 美股走勢卡片 -->
     <section class="card card-compact">
-      <div class="card-title">📈 美股ETF即時行情</div>
+      <div class="card-title">📈 美股ETF即時行情 (VOO / QQQ)</div>
       <div class="stock-grid">
         <div class="stock-item">
           <div class="stock-symbol">VOO</div>
@@ -346,7 +346,7 @@
       { name: '中秋節後第二日', date: '2026-09-26', tip: '💡 請 1 放 4 (請 9/25 即可連休4天)' },
       { name: '國慶日', date: '2026-10-01', tip: '💡 請 1 放 4 (請 10/2 即可連休4天)' },
       { name: '重陽節', date: '2026-10-18', tip: '💡 週末連假不需要請假！' },
-      { name: '聖誕節', date: '2026-12-25', tip: '💡 請 4 放 10 (請 12/28-31 爽放跨年假)' }
+      { name: '聖誕節', date: '2026-12-25', tip: '💡 請 4 放 10 (請 12/28-31 爽放跨年大假)' }
     ];
 
     function calculateHoliday() {
@@ -364,37 +364,46 @@
     }
     calculateHoliday();
 
-    /* 美股 ETF 數據 (透過 CORS 代理讀取 Yahoo Finance) */
+    /* 美股 ETF 數據 */
     async function fetchStocks() {
       try {
-        const targetUrl = encodeURIComponent('https://query1.finance.yahoo.com/v7/finance/quote?symbols=VOO,QQQ');
-        const res = await fetch(`https://api.allorigins.win/get?url=${targetUrl}`);
-        const wrapper = await res.json();
-        const data = JSON.parse(wrapper.contents);
-        const quotes = data.quoteResponse.result;
+        // 抓取 VOO 數據
+        const resVOO = await fetch('https://stooq.com/q/l/?s=voo.us&f=sd2t2ohlcvp&h&e=json');
+        const dataVOO = await resVOO.json();
+        const symbolVOO = dataVOO.symbols?.[0];
 
-        const voo = quotes.find(q => q.symbol === 'VOO');
-        const qqq = quotes.find(q => q.symbol === 'QQQ');
+        if (symbolVOO && symbolVOO.close) {
+          const price = parseFloat(symbolVOO.close);
+          const basePrice = parseFloat(symbolVOO.open || symbolVOO.prev_close || price);
+          const changePct = basePrice !== 0 ? ((price - basePrice) / basePrice) * 100 : 0;
 
-        if (voo) {
-          document.getElementById('voo-price').textContent = voo.regularMarketPrice.toFixed(2);
-          const change = voo.regularMarketChangePercent.toFixed(2);
+          document.getElementById('voo-price').textContent = price.toFixed(2);
           const el = document.getElementById('voo-change');
-          el.textContent = `${change >= 0 ? '+' : ''}${change}%`;
-          el.className = `stock-change ${change >= 0 ? 'up' : 'down'}`;
+          el.textContent = `${changePct >= 0 ? '+' : ''}${changePct.toFixed(2)}%`;
+          el.className = `stock-change ${changePct >= 0 ? 'up' : 'down'}`;
         }
 
-        if (qqq) {
-          document.getElementById('qqq-price').textContent = qqq.regularMarketPrice.toFixed(2);
-          const change = qqq.regularMarketChangePercent.toFixed(2);
+        // 抓取 QQQ 數據
+        const resQQQ = await fetch('https://stooq.com/q/l/?s=qqq.us&f=sd2t2ohlcvp&h&e=json');
+        const dataQQQ = await resQQQ.json();
+        const symbolQQQ = dataQQQ.symbols?.[0];
+
+        if (symbolQQQ && symbolQQQ.close) {
+          const price = parseFloat(symbolQQQ.close);
+          const basePrice = parseFloat(symbolQQQ.open || symbolQQQ.prev_close || price);
+          const changePct = basePrice !== 0 ? ((price - basePrice) / basePrice) * 100 : 0;
+
+          document.getElementById('qqq-price').textContent = price.toFixed(2);
           const el = document.getElementById('qqq-change');
-          el.textContent = `${change >= 0 ? '+' : ''}${change}%`;
-          el.className = `stock-change ${change >= 0 ? 'up' : 'down'}`;
+          el.textContent = `${changePct >= 0 ? '+' : ''}${changePct.toFixed(2)}%`;
+          el.className = `stock-change ${changePct >= 0 ? 'up' : 'down'}`;
         }
       } catch (err) {
         console.error('Stock fetch error:', err);
       }
     }
+    
+    /* 立即執行美股抓取，並設為每 60 秒更新一次 */
     fetchStocks();
     setInterval(fetchStocks, 60000);
 
